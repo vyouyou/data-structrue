@@ -272,7 +272,3 @@ class Matrix<Te, Tv>{
 }
 
 export default Matrix;
-
-export function add(a, b) {
-    return a + b;
-}
