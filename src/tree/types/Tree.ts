@@ -1,19 +1,20 @@
 import ITree from "./ITree";
 import TreeNode from "./TreeNode";
+import IData from "./IData";
 
-class Tree extends ITree<{}>{
-    protected size: number;
-    protected root: TreeNode;
+class Tree<T extends IData> extends ITree<T>{
+    protected root:TreeNode<T>;
 
     constructor(){
         super();
         this.size = 0;
+        this.height = 0;
     }
 
-    updateHeight(node:TreeNode): number {
+    updateHeight(node:TreeNode<T>): number {
         throw new Error("Method not implemented.");
     }
-    updateHeightAbove(node:TreeNode): void {
+    updateHeightAbove(node:TreeNode<T>): void {
         throw new Error("Method not implemented.");
     }
     getSize(): number {
@@ -23,26 +24,37 @@ class Tree extends ITree<{}>{
         if(this.root===null) return true;
         return false;
     }
-    insertRoot(data: {}): void {
+
+    insertRoot(data: T): void {
         this.root = new TreeNode(data);
+        this.height = 0;
     }
 
-    insertLeftChild(node: TreeNode, data: {}): void {
-        node.leftChild = new TreeNode(data);
-        this.size++;
+    insertNode(data:T){
+        this.root.insertNode(data);
     }
-    insertRightChild(node: TreeNode, data: {}): void {
-        node.rightChild = new TreeNode(data);
-        this.size++;
-    }
-    attachTreeLeft(node: TreeNode, tree: ITree<{}>): void {
+
+    // insertLeftChild(node: TreeNode<T>, data: T): void {
+    //     const insertedNode = node.insertLeft(data);
+    //     insertedNode.height > this.height&&(this.height = insertedNode.height);
+    //     this.size++;
+    // }
+    // insertRightChild(node: TreeNode<T>, data: T): void {
+    //     const insertedNode = node.insertRight(data);
+    //     insertedNode.height > this.height&&(this.height = insertedNode.height);
+    //     this.size++;
+    // }
+    attachTreeLeft(node: TreeNode<T>, tree: ITree<T>): void {
         node.leftChild = tree.getRoot();
+        node.height + tree.getHeight()>this.height && (this.height = node.height + tree.getHeight());
+        this.size += tree.getSize();
+    }
+    attachTreeRight(node: TreeNode<T>, tree: ITree<T>): void {
+        node.rightChild = tree.getRoot();
+        node.height + tree.getHeight()>this.height && (this.height = node.height + tree.getHeight());
         this.size+=tree.getSize();
     }
-    attachTreeRight(node: TreeNode, tree: ITree<{}>): void {
-        this.size+=tree.getSize();
-    }
-    removeNode(node: TreeNode): number {
+    removeNode(node: TreeNode<T>): number {
         this.size--;
         return this.size;
     }
@@ -50,10 +62,10 @@ class Tree extends ITree<{}>{
         this.root.travPre(visit);
     }
     tranvIn(visit: Function): void {
-        this.tranvIn(visit);
+        this.root.travIn(visit);
     }
     tranPost(visit: Function): void {
-        this.tranPost(visit);
+        this.root.travPost(visit);
     }
 
 }

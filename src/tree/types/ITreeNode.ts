@@ -1,4 +1,6 @@
-interface ITreeNode<T extends object>{
+import IData from "./IData";
+
+interface ITreeNode<T extends IData>{
     data:T;
     height:number;
     parent:ITreeNode<T>;
@@ -15,6 +17,7 @@ interface ITreeNode<T extends object>{
     travIn(visit:Function):void;
     //后序遍历
     travPost(visit:Function):void;
+
 }
 
 export default ITreeNode;

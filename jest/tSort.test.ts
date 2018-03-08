@@ -1,5 +1,5 @@
-import Matrix from "../graph/types/Matrix";
-import { VStatus, EType } from "../graph/config/enum";
+import Matrix from "../src/graph/types/Matrix";
+import { VStatus, EType } from "../src/graph/config/enum";
 
 const matrix = new Matrix();
 
